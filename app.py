@@ -37,5 +37,5 @@ if st.button("Analyze Article"):
         if prediction == "REAL":
             st.success("This news looks REAL!")
         else:
-            st.error("This news looks FAKE.")
+            st.error("Careful! This news looks FAKE.")
         
