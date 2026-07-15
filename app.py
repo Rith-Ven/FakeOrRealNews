@@ -28,39 +28,38 @@ except FileNotFoundError:
 
 tab1, tab2 = st.tabs(["Analyze via URL", "Analyze via Text"])
 with tab1:
-    url_input = st.text_input("Paste News Article URL", placeholder = "https://www.example.com/new-article")
     
-    if st.button("Fetch & Analyze URL") == "":
-        st.warning("Please enter a valid URL.")
-    else:
-        with st.spinner("Fetching article content..."):
-            try:
-                clean_url = url.input.strip()
-                if not clean_url.startswith(("http://", "https:''")):
-                    clean_url = "https://" + clean_url
-                    
-                import newspaper
+    with st.form(key = "url_form"):
+        url_input = st.text_input("Paste News Article URL", placeholder = "https://www.example.com/new-article")
+        submit_button = st.form_submit_button(label = "Fetch and Analyze URL")
+    if submit_button:
+        if not url_input.strip():
+            st.warning("Please enter a valid URL.")
+        else:
+            with st.spinner("Fetching article content..."):
+                try:
+                    import newspaper
 
-                article = newspaper.article(url_input)
-                article_text = article.text
+                    article = newspaper.article(url_input.strip())
+                    article_text = article.text
 
-                if not article_text.strip():
-                    st.error("Could not extract any text from this URL.")
-                else:
-                    st.info(f"**Extracted Title:** {article.title}")
-                    with st.expander("Show scraped text snippet"):
-                        st.write(article_text[:600] + "...")
-                    transformed_input = vectorizer.transform([article_text])
-                    prediction = model.predict(transformed_input)[0]
-
-                    st.write("---")
-                    if prediction == "REAL":
-                        st.success("This news looks **REAL**")
+                    if not article_text or not article_text.strip():
+                        st.error("Could not extract any text from this URL.")
                     else:
-                        st.error("Warning: This news looks **FAKE**")
+                        st.info(f"**Extracted Title:** {article.title}")
+                        with st.expander("Show scraped text snippet"):
+                            st.write(article_text[:600] + "...")
+                        
+                        transformed_input = vectorizer.transform([article_text])
+                        prediction = model.predict(transformed_input)[0]
 
-            except Exception as e:
-                st.error(f"Error fetching article. Check the URL or try pasting the raw text. (Error: {e})")
+                        st.write("---")
+                        if prediction == "REAL":
+                            st.success("This news looks **REAL**")
+                        else:
+                            st.error("Warning: This news looks **FAKE**")
+                except Exception as e:
+                    st.error(f"Error fetching article. Check the URL or try pasting the raw text. (Error: {e})")
 
 with tab2:
     user_input = st.text_area("Paste news article text here: ", height=200, placeholder = "Type or paste text here...")
