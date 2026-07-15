@@ -1,6 +1,5 @@
 import streamlit as st
 import pickle
-import newspaper
 
 st.set_page_config(page_title = "Fake News Detector", page_icon = "📰", layout = "centered")
 
@@ -30,11 +29,18 @@ except FileNotFoundError:
 tab1, tab2 = st.tabs(["Analyze via URL", "Analyze via Text"])
 with tab1:
     url_input = st.text_input("Paste News Article URL", placeholder = "https://www.example.com/new-article")
+    
     if st.button("Fetch & Analyze URL") == "":
         st.warning("Please enter a valid URL.")
     else:
         with st.spinner("Fetching article content..."):
             try:
+                clean_url = url.input.strip()
+                if not clean_url.startswith(("http://", "https:''")):
+                    clean_url = "https://" + clean_url
+                    
+                import newspaper
+
                 article = newspaper.article(url_input)
                 article_text = article.text
 
@@ -60,7 +66,7 @@ with tab2:
     user_input = st.text_area("Paste news article text here: ", height=200, placeholder = "Type or paste text here...")
 
     if st.button("Analyze raw text"):
-        if user_input.strip() == "":
+        if not user_input.strip():
             st.warning("Please enter some text before analyzing.")
         else:
             transformed_input = vectorizer.transform([user_input])
