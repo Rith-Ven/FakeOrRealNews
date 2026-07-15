@@ -1,7 +1,7 @@
 import streamlit as st
 import pickle
 
-st.set_page_config(page_title = "Fake News Detector" page_icon = "📰", layout = "centered")
+st.set_page_config(page_title = "Fake News Detector", page_icon = "📰", layout = "centered")
 
 st.write("Enter an article or headline below to analyze its credibility.")
 
