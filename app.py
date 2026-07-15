@@ -41,6 +41,7 @@ except FileNotFoundError:
 #User_input = st.text_area("Enter News Article here:", height = 200, placeholder = "Type or paste news content...")
 
 tab1, tab2 = st.tabs(["Analyze via URL", "Analyze via Text"])
+# Prior to trying to handle firewalls
 # with tab1:
     
 #     with st.form(key = "url_form"):
@@ -96,7 +97,7 @@ tab1, tab2 = st.tabs(["Analyze via URL", "Analyze via Text"])
                         
 #                 except Exception as e:
 #                     st.error(f"Error fetching article. Check the URL or try pasting the raw text. (Error: {e})")
-# --- TAB 1: URL ANALYSIS ---
+# 
 with tab1:
     with st.form(key="url_form"):
         url_input = st.text_input("Paste News Article URL", placeholder="https://www.example.com/new-article")
