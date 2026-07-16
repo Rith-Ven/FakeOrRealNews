@@ -1,0 +1,6 @@
+streamlit
+scikit-learn
+newspaper4k
+cloudscraper
+requests
+nltk
